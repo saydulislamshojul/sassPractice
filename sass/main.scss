@@ -1,0 +1,137 @@
+@forward "./base/index";
+@use "./utility/index";
+
+$header-bg: lightblue;
+$main-bg: lightgreen;
+$footer-bg: lightseagreen;
+$copyrightFontSize: 14px;
+header {
+  background-color: $header-bg;
+}
+
+// Nesting css rules in order of descendent
+nav {
+  padding: 1rem;
+
+  ul {
+    list-style: none;
+    li {
+      display: inline-block;
+      margin-inline: 1rem;
+      a {
+        text-decoration: none;
+        color: white;
+        padding: 0.7rem;
+        transition: 0.4s;
+        border-radius: 0.7rem;
+      }
+      a:hover {
+        background-color: black;
+      }
+    }
+  }
+}
+
+main {
+  background-color: $main-bg;
+}
+footer {
+  background-color: $footer-bg;
+}
+footer p {
+  font-size: $copyrightFontSize;
+  text-align: center;
+}
+main p {
+  background-color: $header-bg;
+}
+
+// mixin is like a function for reuse the code
+@mixin p-style {
+  font-size: 18px;
+  text-align: justify;
+  padding: 0.5rem;
+  font-weight: 500;
+}
+
+main p {
+  @include p-style();
+}
+@mixin again-p($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+  padding: 0.6rem;
+}
+footer p {
+  color: white;
+  @include again-p(14px, 400);
+}
+
+//  extend part
+.btn {
+  color: black;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  margin: 0.5rem;
+}
+.learn-btn {
+  background-color: yellow;
+  @extend .btn;
+}
+.download-btn {
+  background-color: lightcoral;
+  @extend .btn;
+}
+
+// Conditional statements
+@mixin setFont($value) {
+  @if ($value == small) {
+    font-size: 1rem;
+  } @else if($value == medium) {
+    font-size: 1.5rem;
+  } @else if($value == large) {
+    font-size: 2rem;
+  }
+}
+
+main h2 {
+  @include setFont(large);
+}
+main p {
+  @include setFont(small);
+}
+
+// for and while loop
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+  border: 1px solid red;
+}
+// @for $i from 1 through 12 {
+//   .col-#{$i} {
+//     width: 100% / 12 * $i;
+//   }
+// }
+$i:1;
+@while $i < 13 {
+  .col-#{$i} {
+     width: 100% / 12 * $i;
+      }
+      $i : $i + 1;
+}
+.row::after{
+  content: "";
+  clear: both;
+  display: table;
+}
+ 
+// Each part it's like forEach loop 
+// @each $color in red, blue, green{
+//   .#{$color}-text {color: $color;};
+// };
+$colors: (color1: red, color2: blue, color3:green);
+@each $key, $value in $colors{
+  .#{$value}-text {color: $value;};
+}
